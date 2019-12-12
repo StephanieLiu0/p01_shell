@@ -10,20 +10,29 @@
 #include "header.h"
 
 int main() {
-  printf("Enter commands to execute: ");
   char input[100];
-  fgets(input, 100, stdin);
-
   char modInput[100];
-  strncpy(modInput, input, strlen(input)-1);
+  int x;
+  char ** args;
+  while (1){
+    printf("$ ");
 
-  char ** cmds = parse(modInput, ";");
-  for (int i = 0; cmds[i] != NULL; i++) {
-    printf("\n");
-    char ** args = parse(cmds[i], " ");
+    fgets(input, 100, stdin);
+    strncpy(modInput, input, strlen(input)-1);
+    char ** cmds = parse_multi_lines(modInput);
+    for (int i = 0; cmds[i] != NULL; i++) {
+      args = parse(cmds[i], " ");
+    }
+
+    if (strcmp(cmds[0], "exit") == 0){
+      exit(0);
+    }
+
+    if (strcmp(cmds[0], "cd") == 0){
+      changeDirectory(cmds);
+    }
+
     execute(args);
   }
-  printf("\n");
-
   return 0;
 }
