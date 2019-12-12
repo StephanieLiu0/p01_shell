@@ -26,15 +26,12 @@ int main() {
 
     if (strcmp(cmds[0], "exit") == 0){
       exit(0);
-    }
-
-    if (strcmp(cmds[0], "cd") == 0){
+    } else if (strcmp(cmds[0], "cd") == 0){
       changeDirectory(args);
     }
-
-
-    execute(args);
-
+    else {
+      execute(args);
+    }
     free(cmds);
   }
   return 0;

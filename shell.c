@@ -52,12 +52,16 @@ int execute(char ** args) {
 }
 
 int changeDirectory(char * args[]){
-  printf("%s\n", args[1]);
   if (args[1] == NULL){
     chdir(getenv("HOME"));
     return 1;
   } else {
-    chdir(args[1]);
+    if (chdir(args[1]) == -1){
+       printf("%s: no such directory\n", args[1]);
+       return -1;
+     } else {
+      chdir(args[1]);
+    }
   }
   return 0;
 }
