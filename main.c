@@ -29,10 +29,13 @@ int main() {
     }
 
     if (strcmp(cmds[0], "cd") == 0){
-      changeDirectory(cmds);
+      changeDirectory(args);
     }
 
+
     execute(args);
+
+    free(cmds);
   }
   return 0;
 }
