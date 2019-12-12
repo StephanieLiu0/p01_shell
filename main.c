@@ -11,15 +11,15 @@
 
 int main() {
   char input[100];
-  char modInput[100];
   int x;
   char ** args;
   while (1){
     printf("$ ");
 
     fgets(input, 100, stdin);
-    strncpy(modInput, input, strlen(input)-1);
-    char ** cmds = parse_multi_lines(modInput);
+    //strncpy(modInput, input, strlen(input)-1);
+    input[strlen(input) - 1] = 0;
+    char ** cmds = parse_multi_lines(input);
     for (int i = 0; cmds[i] != NULL; i++) {
       args = parse(cmds[i], " ");
     }
