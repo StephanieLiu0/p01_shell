@@ -39,6 +39,13 @@ void execute(char ** args) {
   else if (strcmp(args[0], "cd") == 0){
     changeDirectory(args);
   }
+  // piping
+  else if (args[1] != NULL){
+    if (strcmp(args[1], "|") == 0){
+      printf("%s\n", *args);
+      myPipe(args);
+    } else forkExecute(args);
+  }
   else forkExecute(args);
 }
 
@@ -63,9 +70,25 @@ int changeDirectory(char * args[]){
     }
     else {
       chdir(args[1]);
-      printf("%s\n", getcwd(dir, 100));
+      // printf("%s\n", getcwd(dir, 100));
     }
   }
+  return 0;
+}
+
+/*
+  pipe command - to be written later
+*/
+
+int myPipe(char ** args){
+  FILE *input = popen(args[0], "r");
+  FILE *output = popen(args[2], "w");
+  char cmds[100];
+  while (fgets(cmds, 100, input)){
+    fputs(cmds, output);
+  }
+  pclose(input);
+  pclose(output);
   return 0;
 }
 
