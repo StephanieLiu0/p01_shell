@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <sys/types.h>
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "header.h"
 
@@ -91,7 +91,8 @@ int forkExecute(char ** args) {
     execvp(args[0], args);
     if (errno != 0){
       printf("command not found: %s \n", args[0]);
-      exit(0);
+      kill(pid, SIGTERM);
+      return -1;
     }
   }
   return 0;
