@@ -14,6 +14,8 @@ char ** parse(char * line, char * ch) {
   int i;
   for (i = 0; line != NULL; i++) {
     arr[i] = strsep(&line, ch);
+    if (strlen(arr[i]) == 0)
+      i--;
   }
   arr[i] = NULL;
   return arr;
@@ -60,10 +62,10 @@ int changeDirectory(char * args[]){
     printf("%s\n", getcwd(dir, 100));
     return 1;
   } else {
-    FILE *fptr = fopen(args[1], "r");
-    if (fptr == NULL) {
+    FILE *file = fopen(args[1], "r");
+    if (file == NULL) {
       printf("%s: no such directory\n", args[1]);
-      fclose(fptr);
+      fclose(file);
       return -1;
     } else {
       chdir(args[1]);
