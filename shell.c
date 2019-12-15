@@ -31,20 +31,23 @@ char ** parse(char * line, char * ch) {
   Execute the command
 */
 void execute(char ** args) {
+  int i = 0;
+  int pipe = 0;
+  for (i = 0; args[i] != NULL; i++){
+    if (strcmp(args[i], "|") == 0){
+      pipe = 1;
+    }
+  }
+  if (pipe == 1){
+    myPipe(args);
+  }
   // edge case: exit command
-  if (strcmp(args[0], "exit") == 0){
+  else if (strcmp(args[0], "exit") == 0){
     exit(0);
   }
   // edge case: cd command
   else if (strcmp(args[0], "cd") == 0){
     changeDirectory(args);
-  }
-  // piping
-  else if (args[1] != NULL){
-    if (strcmp(args[1], "|") == 0){
-      printf("%s\n", *args);
-      myPipe(args);
-    } else forkExecute(args);
   }
   else forkExecute(args);
 }
