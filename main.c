@@ -17,19 +17,11 @@ int main() {
     printf("$ ");
 
     fgets(input, 100, stdin);
-    //strncpy(modInput, input, strlen(input)-1);
     input[strlen(input) - 1] = 0;
+
     char ** cmds = parse_multi_lines(input);
     for (int i = 0; cmds[i] != NULL; i++) {
       args = parse(cmds[i], " ");
-    }
-
-    if (strcmp(cmds[0], "exit") == 0){
-      exit(0);
-    } else if (strcmp(cmds[0], "cd") == 0){
-      changeDirectory(args);
-    }
-    else {
       execute(args);
     }
     free(cmds);

@@ -20,16 +20,18 @@ char ** parse(char * line, char * ch) {
 }
 
 char ** parse_multi_lines(char * line){
-  char ** arr = malloc(100);
-  int i;
-  for (i = 0; line != NULL; i++) {
-    arr[i] = strsep(&line, ";");
-  }
-  arr[i] = NULL;
-  return arr;
+  return parse(line, ";");
 }
 
-int execute(char ** args) {
+void execute(char ** args) {
+  if (strcmp(args[0], "exit") == 0){
+    exit(0);
+  } else if (strcmp(args[0], "cd") == 0){
+    changeDirectory(args);
+  } else forkExecute(args);
+}
+
+int forkExecute(char ** args) {
   pid_t pid = fork();
   int status;
   // if (pid == 0){
@@ -52,15 +54,20 @@ int execute(char ** args) {
 }
 
 int changeDirectory(char * args[]){
+  char dir[100];
   if (args[1] == NULL){
     chdir(getenv("HOME"));
+    printf("%s\n", getcwd(dir, 100));
     return 1;
   } else {
-    if (chdir(args[1]) == -1){
-       printf("%s: no such directory\n", args[1]);
-       return -1;
-     } else {
+    FILE *fptr = fopen(args[1], "r");
+    if (fptr == NULL) {
+      printf("%s: no such directory\n", args[1]);
+      fclose(fptr);
+      return -1;
+    } else {
       chdir(args[1]);
+      printf("%s\n", getcwd(dir, 100));
     }
   }
   return 0;
