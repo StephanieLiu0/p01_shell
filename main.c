@@ -11,15 +11,16 @@
 
 int main() {
   char input[100];
-  int x;
   char ** args;
+
   while (1){
     printf("$ ");
 
     fgets(input, 100, stdin);
     input[strlen(input) - 1] = 0;
 
-    char ** cmds = parse_multi_lines(input);
+    char ** cmds = parse(input, ";");
+
     for (int i = 0; cmds[i] != NULL; i++) {
       args = parse(cmds[i], " ");
       execute(args);
