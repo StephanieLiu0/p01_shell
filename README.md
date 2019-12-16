@@ -10,7 +10,7 @@
 # Bugs:
 - Function can execute multiple commands in both of these formats: "cd;ls" or "cd ; ls"
 - Program cannot detect pipes like the spacing above; the function terminates if there is no spaces between the pipe symbol and the commands
--
+- Program terminates entirely if given a nonexistent command
 
 # Files and function headers
 shell.c 
