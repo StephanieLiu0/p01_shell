@@ -24,12 +24,6 @@ int main() {
 
     for (int i = 0; cmds[i] != NULL; i++) {
       args = parse(cmds[i], " ");
-      //printf("%s\n", input);
-      // if (strstr(input, "|") != NULL){
-      // else if (strcmp(args[1], "|") == 0){
-      //   printf("%s\n", input);
-      //   myPipe(args);
-      // }
       execute(args);
     }
     free(cmds);
