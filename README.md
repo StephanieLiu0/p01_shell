@@ -5,7 +5,7 @@
 - Forks and executes commands
 - Parses multiple commands on one line
 - Redirects using >, <
-- 
+-
 
 # Bugs:
 - Function can execute multiple commands in both of these formats: "cd;ls" or "cd ; ls"
@@ -13,7 +13,7 @@
 - Program terminates entirely if given a nonexistent command
 
 # Files and function headers
-shell.c 
+shell.c
 
 *handles all of the main commands: parsing, executing, cd, piping, and redirection*
 
@@ -30,7 +30,7 @@ shell.c
 
     - int myPipe(char ** args);
       Pipes the commands based on the given arguments
-      Returns -1 if one or both of the commands are invalid, 0 if sucessful
+      Returns -1 if one or both of the commands are invalid, 0 if successful
 
     - int forkExecute(char ** args);
       Forks and executes the command based on the given arguments

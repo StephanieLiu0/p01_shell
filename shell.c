@@ -31,12 +31,11 @@ char ** parse(char * line, char * ch) {
   Executes the command and calls different functions based on the arguments given.
 */
 void execute(char ** args) {
-  int i = 0;
+  // check for a pipe
   int pipe = 0;
-  for (i = 0; args[i] != NULL; i++){ // loops through the arguments to check for a pipe
-    if (strcmp(args[i], "|") == 0){
+  for (int i = 0; args[i] != NULL; i++) {
+    if (strcmp(args[i], "|") == 0)
       pipe = 1;
-    }
   }
   if (pipe == 1){
     myPipe(args);
@@ -81,7 +80,7 @@ int changeDirectory(char * args[]){
 
 /*
   Pipes the commands based on the given arguments
-  Returns -1 if one or both of the commands are invalid, 0 if sucessful
+  Returns -1 if one or both of the commands are invalid, 0 if successful
 */
 
 int myPipe(char ** args){
