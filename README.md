@@ -11,7 +11,8 @@
 - Function can execute multiple commands in both of these formats: "cd;ls" or "cd ; ls"
 - Program cannot detect pipes like the spacing above; the function terminates if there is no spaces between the pipe symbol and the commands
 - Program terminates entirely if given a nonexistent command
-- Commands limited to 100 characters
+- Command line input limited to 100 characters
+- Expects the last character in the command line input to be a new line, so the last character is always removed
 
 # Files and function headers
 shell.c
