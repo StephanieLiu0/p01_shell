@@ -28,7 +28,7 @@ char ** parse(char * line, char * ch) {
 }
 
 /*
-  Execute the command
+  Executes the command and calls different functions based on the arguments given.
 */
 void execute(char ** args) {
   int i = 0;
