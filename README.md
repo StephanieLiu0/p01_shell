@@ -4,42 +4,89 @@
 # Features
 - Forks and executes commands
 - Parses multiple commands on one line
-- Redirects using >, <
--
+- Redirects using <, >, >>
+- Implements simple pipes
 
-# Bugs:
+# Things to Know / Bugs
 - Function can execute multiple commands in both of these formats: "cd;ls" or "cd ; ls"
 - Program cannot detect pipes like the spacing above; the function terminates if there is no spaces between the pipe symbol and the commands
 - Program terminates entirely if given a nonexistent command
+- Commands limited to 100 characters
 
 # Files and function headers
 shell.c
+*handles all functions necessary for parsing and executing:
 
-*handles all of the main commands: parsing, executing, cd, piping, and redirection*
+      /*======== char ** parse() ==========
+      Inputs: char * line
+              char * ch
+      Returns: array of strings separated by the delimiter
 
-    - char ** parse(char * line, char * ch);
-      Parse a string using the delimiter ch
-      Returns an array of arguments
+      Parses a line using the specified delimiter.
+      ====================*/
 
-    - void execute(char ** args);
-      Executes the command based on the arguments given
 
-    - int changeDirectory(char * args[]);
-      Changes the directory based on the given argument
-      Returns 1 if no path is given, -1 if path does not exist, 0 if path exists and chdir is successful
+      /*======== void execute ==========
+      Inputs: (char ** args)
+      Returns:
 
-    - int myPipe(char ** args);
-      Pipes the commands based on the given arguments
-      Returns -1 if one or both of the commands are invalid, 0 if successful
+      Executes the command by calling different functions based on the arguments given.
+      If a pipe is present, myPipe(char ** args) is called.
+      If the command is exit, the program exits.
+      If the command is cd, changeDirectory(char * args[]) is called.
+      ====================*/
 
-    - int forkExecute(char ** args);
-      Forks and executes the command based on the given arguments
-      Returns 0 if successful and -1 if there is an error
 
-    - void redirect (char ** args);
-      Redirects based on the given arguments
-      Returns 0 if successful and -1 if there is an error
+      /*======== int changeDirectory() ==========
+      Inputs: char * args[]
+      Returns: 1 if the only arg is "cd" and no path is given
+              -1 if the path does not exist
+              0 if the path exists and chdir is successful
+
+      Changes the directory based on the argument (if any) given after "cd".
+      ====================*/
+
+
+      /*======== int myPipe() ==========
+      Inputs: char ** args
+      Returns: -1 if one or both of the commands are invalid
+              0 if successful
+
+      Pipes the commands based on the arguments.
+      ====================*/
+
+
+      /*======== int forkExecute() ==========
+      Inputs: char ** args
+      Returns: -1 if there is an error
+              0 if successful
+
+      Forks and executes the command. If forking is unsuccessful, an errno is printed.
+      Otherwise, the parent process waits while the child process executes the command.
+      If the command is invalid, the process is terminated.
+      ====================*/
+
+
+      /*======== void redirect () ==========
+      Inputs: char ** args
+      Returns: -1 if there is an error
+              0 if successful
+
+      Redirects input if "<" present. If ">" present, output is redirected
+      into a file (by creating a new file or overwriting an existing file).
+      If ">>" present, output is redirected into a file (by creating a new file
+      or appending to an existing file).
+      ====================*/
+
 
 main.c
 
-*reads input from the command line and displays prompt*
+*reads input from the command line and displays prompt
+
+      /*======== int main () ==========
+      Inputs:
+      Returns: 0 when exiting shell
+
+      While loop keeps user in shell until the exit command is called or
+      an invalid command is called.
+      ====================*/

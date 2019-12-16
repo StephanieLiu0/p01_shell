@@ -10,10 +10,13 @@
 
 #include "header.h"
 
-/*
-  Parse a string using the delimiter ch
-  Returns an array of arguments
-*/
+/*======== char ** parse() ==========
+Inputs: char * line
+        char * ch
+Returns: array of strings separated by the delimiter
+
+Parses a line using the specified delimiter.
+====================*/
 char ** parse(char * line, char * ch) {
   char ** arr = malloc(100);
   int i;
@@ -27,9 +30,15 @@ char ** parse(char * line, char * ch) {
   return arr;
 }
 
-/*
-  Executes the command and calls different functions based on the arguments given.
-*/
+/*======== void execute ==========
+Inputs: (char ** args)
+Returns:
+
+Executes the command by calling different functions based on the arguments given.
+If a pipe is present, myPipe(char ** args) is called.
+If the command is exit, the program exits.
+If the command is cd, changeDirectory(char * args[]) is called.
+====================*/
 void execute(char ** args) {
   // check for a pipe
   int pipe = 0;
@@ -51,11 +60,14 @@ void execute(char ** args) {
   else forkExecute(args);
 }
 
-/*
-  Changes the directory based on the given argument
-  Returns 1 if no path is given, -1 if path does not exist,
-          0 if path exists and chdir is successful
-*/
+/*======== int changeDirectory() ==========
+Inputs: char * args[]
+Returns: 1 if the only arg is "cd" and no path is given
+        -1 if the path does not exist
+        0 if the path exists and chdir is successful
+
+Changes the directory based on the argument (if any) given after "cd".
+====================*/
 int changeDirectory(char * args[]){
   char dir[100];
   if (args[1] == NULL) {
@@ -78,10 +90,13 @@ int changeDirectory(char * args[]){
   return 0;
 }
 
-/*
-  Pipes the commands based on the given arguments
-  Returns -1 if one or both of the commands are invalid, 0 if successful
-*/
+/*======== int myPipe() ==========
+Inputs: char ** args
+Returns: -1 if one or both of the commands are invalid
+        0 if successful
+
+Pipes the commands based on the arguments.
+====================*/
 
 int myPipe(char ** args){
   FILE *inputCommand = popen(args[0], "r");
@@ -99,10 +114,15 @@ int myPipe(char ** args){
   return 0;
 }
 
-/*
-  Forks and executes the command based on the given arguments
-  Returns 0 if successful and -1 if there is an error
-*/
+/*======== int forkExecute() ==========
+Inputs: char ** args
+Returns: -1 if there is an error
+        0 if successful
+
+Forks and executes the command. If forking is unsuccessful, an errno is printed.
+Otherwise, the parent process waits while the child process executes the command.
+If the command is invalid, the process is terminated.
+====================*/
 int forkExecute(char ** args) {
   pid_t pid = fork();
   int status;
@@ -128,10 +148,16 @@ int forkExecute(char ** args) {
   return 0;
 }
 
-/*
-  Redirects based on the given arguments
-  Returns 0 if successful and -1 if there is an error
-*/
+/*======== void redirect () ==========
+Inputs: char ** args
+Returns: -1 if there is an error
+        0 if successful
+
+Redirects input if "<" present. If ">" present, output is redirected
+into a file (by creating a new file or overwriting an existing file).
+If ">>" present, output is redirected into a file (by creating a new file
+or appending to an existing file).
+====================*/
 void redirect (char ** args) {
   int i;
   for (i = 0; args[i] != NULL; i++) {
