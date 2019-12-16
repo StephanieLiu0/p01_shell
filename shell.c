@@ -33,7 +33,7 @@ char ** parse(char * line, char * ch) {
 void execute(char ** args) {
   int i = 0;
   int pipe = 0;
-  for (i = 0; args[i] != NULL; i++){
+  for (i = 0; args[i] != NULL; i++){ // loops through the arguments to check for a pipe
     if (strcmp(args[i], "|") == 0){
       pipe = 1;
     }
@@ -80,18 +80,23 @@ int changeDirectory(char * args[]){
 }
 
 /*
-  pipe command - to be written later
+  Pipes the commands based on the given arguments
+  Returns -1 if one or both of the commands are invalid, 0 if sucessful
 */
 
 int myPipe(char ** args){
-  FILE *input = popen(args[0], "r");
-  FILE *output = popen(args[2], "w");
-  char cmds[100];
-  while (fgets(cmds, 100, input)){
-    fputs(cmds, output);
+  FILE *inputCommand = popen(args[0], "r");
+  FILE *outputCommand = popen(args[2], "w");
+  if (!inputCommand || !outputCommand){
+    printf("Error: %s\n", strerror(errno));
+    return -1;
   }
-  pclose(input);
-  pclose(output);
+  char cmds[100];
+  while (fgets(cmds, 100, inputCommand)){
+    fputs(cmds, outputCommand);
+  }
+  pclose(inputCommand);
+  pclose(outputCommand);
   return 0;
 }
 
